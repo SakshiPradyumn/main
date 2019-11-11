@@ -3,6 +3,7 @@ package seedu.address.ui.bookings;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CONTACT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,7 +22,7 @@ import seedu.address.ui.template.Page;
 
 
 /**
- * Page for EEditing Booking information
+ * Page for Editing Booking information
  */
 public class EditBookingsPage extends Page<AnchorPane> {
 
@@ -30,6 +31,7 @@ public class EditBookingsPage extends Page<AnchorPane> {
     private TextFormItem bookingsNameFormItem;
     private TextFormItem bookingsContactFormItem;
     private DoubleFormItem bookingsExpenseFormItem;
+    private TextFormItem bookingsTypeFormItem;
 
     @javafx.fxml.FXML
     private VBox formItemsPlaceholder;
@@ -59,6 +61,8 @@ public class EditBookingsPage extends Page<AnchorPane> {
                 bookingsContactFormItem.setValue(contact.toString()));
         currentEditDescriptor.getBudget().ifPresent(budget ->
                 bookingsExpenseFormItem.setValue(budget.getValue()));
+        currentEditDescriptor.getType().ifPresent(type ->
+                bookingsTypeFormItem.setValue(type.toString()));
     }
 
     /**
@@ -76,8 +80,12 @@ public class EditBookingsPage extends Page<AnchorPane> {
                     + " " + PREFIX_CONTACT + contact);
         });
         bookingsExpenseFormItem = new DoubleFormItem("Total budget (in Singapore Dollar): ", totalBudget -> {
-            mainWindow.executeGuiCommand(EditEventFieldCommand.COMMAND_WORD
+            mainWindow.executeGuiCommand(EditBookingsFieldCommand.COMMAND_WORD
                     + " " + PREFIX_BUDGET + String.format("%.2f", totalBudget));
+        });
+        bookingsTypeFormItem = new TextFormItem("Type of booking : ", type -> {
+            mainWindow.executeGuiCommand(EditBookingsFieldCommand.COMMAND_WORD
+                    + " " + PREFIX_TYPE + type);
         });
 
         fillPage(); //update and overwrite with existing edit descriptor
@@ -85,7 +93,8 @@ public class EditBookingsPage extends Page<AnchorPane> {
         formItemsPlaceholder.getChildren().addAll(
                 bookingsNameFormItem.getRoot(),
                 bookingsContactFormItem.getRoot(),
-                bookingsExpenseFormItem.getRoot());
+                bookingsExpenseFormItem.getRoot(),
+                bookingsTypeFormItem.getRoot());
     }
 
     @FXML

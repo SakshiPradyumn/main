@@ -7,6 +7,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.booking.Booking;
 import seedu.address.model.booking.Name;
 import seedu.address.model.itinerary.Budget;
+import seedu.address.model.booking.Type;
 
 /**
  * Jackson friendly version of {@code Booking}.
@@ -17,6 +18,7 @@ public class JsonAdaptedBooking {
     private final Name name;
     private final String contact;
     private final Budget budget;
+    private final String type;
 
     /**
      * Constructs a {@code JsonAdaptedExpenditure} with the given Expenditure details.
@@ -24,10 +26,12 @@ public class JsonAdaptedBooking {
     @JsonCreator
     public JsonAdaptedBooking(@JsonProperty("name") Name name,
                               @JsonProperty("contact") String contact,
-                              @JsonProperty("budget") Budget budget) {
+                              @JsonProperty("budget") Budget budget,
+                              @JsonProperty("type") String type) {
         this.name = name;
         this.contact = contact;
         this.budget = budget;
+        this.type = type;
     }
 
     /**
@@ -37,6 +41,7 @@ public class JsonAdaptedBooking {
         this.name = source.getName();
         this.contact = source.getContact();
         this.budget = source.getBudget();
+        this.type = source.getType();
     }
 
     /**
@@ -50,7 +55,7 @@ public class JsonAdaptedBooking {
                     String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
         }
 
-        return new Booking(name, contact, budget) {
+        return new Booking(name, contact, budget, type) {
         };
     }
 }

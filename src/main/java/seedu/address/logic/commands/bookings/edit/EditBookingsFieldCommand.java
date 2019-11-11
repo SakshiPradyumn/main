@@ -5,6 +5,7 @@ import static seedu.address.commons.util.CollectionUtil.isAllPresent;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CONTACT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.booking.Booking;
 import seedu.address.model.booking.Name;
+import seedu.address.model.booking.Type;
 import seedu.address.model.itinerary.Budget;
 
 /**
@@ -32,6 +34,7 @@ public class EditBookingsFieldCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_CONTACT + "CONTACT] "
             + "[" + PREFIX_BUDGET + "BUDGET] "
+            + "[" + PREFIX_TYPE + "TYPE] "
             + "Example: " + COMMAND_WORD + " 1 " + PREFIX_CONTACT + "10";
 
     public static final String MESSAGE_NOT_EDITED = "At least one field must be provided!";
@@ -87,11 +90,13 @@ public class EditBookingsFieldCommand extends Command {
         private Optional<Name> name;
         private Optional<String> contact;
         private Optional<Budget> budget;
+        private Optional<String> type;
 
         public EditBookingsDescriptor() {
             name = Optional.empty();
             contact = Optional.empty();
             budget = Optional.empty();
+            type = Optional.empty();
         }
 
         /**
@@ -102,8 +107,8 @@ public class EditBookingsFieldCommand extends Command {
             name = toCopy.getName();
             contact = toCopy.getContact();
             budget = toCopy.getBudget();
+            type = toCopy.getType();
         }
-
 
         /**
          * Copy constructor.
@@ -113,16 +118,17 @@ public class EditBookingsFieldCommand extends Command {
             setName(toCopy.getName());
             setContact(toCopy.getContact());
             setBudget(toCopy.getBudget());
+            setType(toCopy.getType());
         }
 
 
         /**
          * Overwrite constructor.
-         * Constructs a new {@code EditEventDescriptor} using an {@code oldDescriptor}, overwritten with
+         * Constructs a new {@code EditBookingsDescriptor} using an {@code oldDescriptor}, overwritten with
          * values of the {@code newDescriptor} where they exist.
          *
-         * @param oldDescriptor Old {@code EditEventDescriptor} to use.
-         * @param newDescriptor New {@code EditEventDescriptor} to use.
+         * @param oldDescriptor Old {@code EditBookingsDescriptor} to use.
+         * @param newDescriptor New {@code EditBookingsDescriptor} to use.
          */
         public EditBookingsDescriptor(EditBookingsDescriptor oldDescriptor,
                                          EditBookingsDescriptor newDescriptor) {
@@ -135,6 +141,9 @@ public class EditBookingsFieldCommand extends Command {
 
             newDescriptor.budget.ifPresentOrElse(this::setBudget, () ->
                     oldDescriptor.budget.ifPresent(this::setBudget));
+
+            newDescriptor.type.ifPresentOrElse(this::setType, () ->
+                    oldDescriptor.type.ifPresent(this::setType));
         }
 
 
@@ -147,8 +156,8 @@ public class EditBookingsFieldCommand extends Command {
          * @throws NullPointerException If any of the fields are empty.
          */
         public Booking buildBooking() {
-            if (isAllPresent(name, contact, budget)) {
-                return new Booking(name.get(), contact.get(), budget.get()) {
+            if (isAllPresent(name, contact, budget, type)) {
+                return new Booking(name.get(), contact.get(), budget.get(), type.get()) {
                 };
             } else {
                 throw new NullPointerException();
@@ -156,17 +165,18 @@ public class EditBookingsFieldCommand extends Command {
         }
 
         /**
-         * Builds an edited {@code Expenditure} instance from this {@code EditBookingsDescriptor}.
-         * Uses the original expenditure information first, overwriting where the values exist.
+         * Builds an edited {@code Booking} instance from this {@code EditBookingsDescriptor}.
+         * Uses the original booking information first, overwriting where the values exist.
          *
-         * @param booking Source {@code Expenditure} instance.
+         * @param booking Source {@code Booking} instance.
          * @param booking
-         * @return Edited {@code Expenditure} instance.
+         * @return Edited {@code Booking} instance.
          */
         public Booking buildBooking(Booking booking) {
             Name bookingName = booking.getName();
             String contact = booking.getContact();
             Budget budget = booking.getBudget();
+            String type = booking.getType();
 
             if (this.name.isPresent()) {
                 bookingName = this.name.get();
@@ -177,8 +187,11 @@ public class EditBookingsFieldCommand extends Command {
             if (this.budget.isPresent()) {
                 budget = this.budget.get();
             }
+            if (this.type.isPresent()) {
+                type = this.type.get();
+            }
 
-            return new Booking(bookingName, contact, budget) {
+            return new Booking(bookingName, contact, budget, type) {
             };
         }
 
@@ -212,6 +225,12 @@ public class EditBookingsFieldCommand extends Command {
 
         public Optional<Budget> getBudget() {
             return budget;
+        }
+
+        public void setType(String type) { this.type = Optional.of(type); }
+
+        public Optional<String> getType() {
+            return type;
         }
 
         /*
@@ -258,7 +277,8 @@ public class EditBookingsFieldCommand extends Command {
 
             return getName().equals(e.getName())
                     && getContact().equals(e.getContact())
-                    && getBudget().equals(e.getBudget());
+                    && getBudget().equals(e.getBudget())
+                    && getType().equals(e.getType());
         }
 
         @Override
@@ -268,6 +288,7 @@ public class EditBookingsFieldCommand extends Command {
             this.name.ifPresent(name -> builder.append(" Name of booking: ").append(name));
             this.contact.ifPresent(contact -> builder.append(" Contact of the booking: ").append(contact));
             this.budget.ifPresent(budget -> builder.append(" Total Budget: ").append(budget));
+            this.type.ifPresent(type -> builder.append(" Type of Booking : ").append(type));
 
             return builder.toString();
         }

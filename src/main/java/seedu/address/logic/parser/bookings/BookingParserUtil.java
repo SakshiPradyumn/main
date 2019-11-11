@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.booking.Name;
+import seedu.address.model.booking.Type;
 import seedu.address.model.itinerary.Budget;
 
 /**
@@ -27,7 +28,7 @@ public abstract class BookingParserUtil {
     }
 
     /**
-     * Parses a {@code String budget} into a {@code Budget}.
+     * Parses a {@code String contact} into a {@code String}.
      * Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code Budget} is invalid.
@@ -53,4 +54,18 @@ public abstract class BookingParserUtil {
         return new Budget(trimmedBudget);
     }
 
+    /**
+     * Parses a {@code String type} into a {@code Budget}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code Budget} is invalid.
+     */
+    public static String parseType(String type) throws ParseException {
+        requireNonNull(type);
+        String trimmedType = type.trim();
+        if (!Budget.isValidBudget(trimmedType)) {
+            throw new ParseException(Budget.MESSAGE_CONSTRAINTS);
+        }
+        return new String(trimmedType);
+    }
 }

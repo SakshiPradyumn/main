@@ -28,4 +28,5 @@ public class CliSyntax {
     public static final Prefix PREFIX_FILE_CHOOSER = new Prefix("fc/");
     public static final Prefix PREFIX_SYMBOL = new Prefix("s/");
     public static final Prefix PREFIX_RATE = new Prefix("r/");
+    public static final Prefix PREFIX_TYPE = new Prefix("ty/");
 }

@@ -10,7 +10,7 @@ import seedu.address.ui.UiPart;
 
 
 /**
- * TODO: Implement display for inventory and booking labels.
+ * BookingCard in Ui for FXML
  */
 public class BookingCard extends UiPart<HBox> {
     private static final String FXML = "bookings/BookingCard.fxml";
@@ -23,6 +23,8 @@ public class BookingCard extends UiPart<HBox> {
     private Label expenseLabel;
     @FXML
     private Label contactLabel;
+    @FXML
+    private Label typeLabel;
 
     @FXML
     private VBox propertiesContainer;
@@ -45,6 +47,7 @@ public class BookingCard extends UiPart<HBox> {
         nameLabel.setText(booking.getName().toString());
         contactLabel.setText(booking.getContact().toString());
         expenseLabel.setText(booking.getBudget().toString());
+        typeLabel.setText(booking.getType().toString());
     }
     @Override
     public boolean equals(Object other) {

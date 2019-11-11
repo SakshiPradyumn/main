@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CONTACT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 
 import java.util.Optional;
 
@@ -34,7 +35,8 @@ public class EditBookingFieldParser implements Parser<EditBookingsFieldCommand> 
                 ArgumentTokenizer.tokenize(args,
                         PREFIX_NAME,
                         PREFIX_CONTACT,
-                        PREFIX_BUDGET);
+                        PREFIX_BUDGET,
+                        PREFIX_TYPE);
 
         Optional<Index> index;
 
@@ -65,6 +67,10 @@ public class EditBookingFieldParser implements Parser<EditBookingsFieldCommand> 
         if (argMultimap.getValue(PREFIX_BUDGET).isPresent()) {
             editBookingsDescriptor.setBudget(
                     BookingParserUtil.parseBudget(argMultimap.getValue(PREFIX_BUDGET).get()));
+        }
+        if (argMultimap.getValue(PREFIX_TYPE).isPresent()) {
+            editBookingsDescriptor.setType(
+                    BookingParserUtil.parseType((argMultimap.getValue(PREFIX_TYPE).get())));
         }
         if (!editBookingsDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditExpenseFieldCommand.MESSAGE_NOT_EDITED);

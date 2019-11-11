@@ -14,8 +14,8 @@ public class RestaurantBooking extends Booking {
 
     //Check Budget of Itinerary and Name
 
-    public RestaurantBooking(Name restName, String contact, Budget budget) {
-        super(restName, contact, budget);
+    public RestaurantBooking(Name restName, String contact, Budget budget, String type) {
+        super(restName, contact, budget, type);
         //this.duration = duration;
     }
 

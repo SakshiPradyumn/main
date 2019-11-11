@@ -10,11 +10,13 @@ public class Booking {
     private final Name name;
     private final String contact;
     private final Budget budget;
+    private final String type;
 
-    public Booking(Name name, String contact, Budget budget) {
+    public Booking(Name name, String contact, Budget budget, String type) {
         this.name = name;
         this.contact = contact;
         this.budget = budget;
+        this.type = type;
     }
 
     public Name getName() {
@@ -27,6 +29,10 @@ public class Booking {
 
     public Budget getBudget() {
         return this.budget;
+    }
+
+    public String getType() {
+        return this.type;
     }
 
     /*
