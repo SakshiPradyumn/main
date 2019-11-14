@@ -53,4 +53,16 @@ public abstract class BookingParserUtil {
         return new Budget(trimmedBudget);
     }
 
+    /**
+     * Parses a {@code String budget} into a {@code Budget}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code Budget} is invalid.
+     */
+    public static String parsePhoto(String photo) throws ParseException {
+        requireNonNull(photo);
+        String trimmedPhoto = photo.trim();
+        return new String(trimmedPhoto);
+    }
+
 }

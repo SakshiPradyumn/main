@@ -2,6 +2,8 @@ package seedu.address.ui.bookings;
 
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CONTACT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DATA_FILE_PATH;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_FILE_CHOOSER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 
 import javafx.fxml.FXML;
@@ -13,9 +15,11 @@ import seedu.address.logic.commands.bookings.edit.CancelEditBookingsCommand;
 import seedu.address.logic.commands.bookings.edit.DoneEditBookingsCommand;
 import seedu.address.logic.commands.bookings.edit.EditBookingsFieldCommand;
 import seedu.address.logic.commands.itinerary.events.edit.EditEventFieldCommand;
+import seedu.address.logic.parser.trips.edit.EditTripCommand;
 import seedu.address.model.Model;
 import seedu.address.ui.MainWindow;
 import seedu.address.ui.components.form.DoubleFormItem;
+import seedu.address.ui.components.form.PhotoFormItem;
 import seedu.address.ui.components.form.TextFormItem;
 import seedu.address.ui.template.Page;
 
@@ -30,6 +34,7 @@ public class EditBookingsPage extends Page<AnchorPane> {
     private TextFormItem bookingsNameFormItem;
     private TextFormItem bookingsContactFormItem;
     private DoubleFormItem bookingsExpenseFormItem;
+    private TextFormItem bookingsPhotoFormItem;
 
     @javafx.fxml.FXML
     private VBox formItemsPlaceholder;
@@ -59,6 +64,8 @@ public class EditBookingsPage extends Page<AnchorPane> {
                 bookingsContactFormItem.setValue(contact.toString()));
         currentEditDescriptor.getBudget().ifPresent(budget ->
                 bookingsExpenseFormItem.setValue(budget.getValue()));
+        currentEditDescriptor.getBookingPhoto().ifPresent(photo ->
+                bookingsPhotoFormItem.setValue(photo.toString()));
     }
 
     /**
@@ -79,13 +86,19 @@ public class EditBookingsPage extends Page<AnchorPane> {
             mainWindow.executeGuiCommand(EditEventFieldCommand.COMMAND_WORD
                     + " " + PREFIX_BUDGET + String.format("%.2f", totalBudget));
         });
+        bookingsPhotoFormItem = new TextFormItem("Photo : ", photo -> {
+            mainWindow.executeGuiCommand(EditBookingsFieldCommand.COMMAND_WORD
+                    + " " + PREFIX_DATA_FILE_PATH + photo);
+        });
+
 
         fillPage(); //update and overwrite with existing edit descriptor
 
         formItemsPlaceholder.getChildren().addAll(
                 bookingsNameFormItem.getRoot(),
                 bookingsContactFormItem.getRoot(),
-                bookingsExpenseFormItem.getRoot());
+                bookingsExpenseFormItem.getRoot(),
+                bookingsPhotoFormItem.getRoot());
     }
 
     @FXML

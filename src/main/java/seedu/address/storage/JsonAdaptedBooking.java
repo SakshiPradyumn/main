@@ -6,7 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.booking.Booking;
 import seedu.address.model.booking.Name;
+import seedu.address.model.common.Photo;
 import seedu.address.model.itinerary.Budget;
+
+import java.util.Optional;
 
 /**
  * Jackson friendly version of {@code Booking}.
@@ -17,6 +20,7 @@ public class JsonAdaptedBooking {
     private final String name;
     private final String contact;
     private final double budget;
+    private final String photo;
 
     /**
      * Constructs a {@code JsonAdaptedExpenditure} with the given Expenditure details.
@@ -24,10 +28,12 @@ public class JsonAdaptedBooking {
     @JsonCreator
     public JsonAdaptedBooking(@JsonProperty("name") String name,
                               @JsonProperty("contact") String contact,
-                              @JsonProperty("budget") double budget) {
+                              @JsonProperty("budget") double budget,
+                              @JsonProperty("photo") String photo) {
         this.name = name;
         this.contact = contact;
         this.budget = budget;
+        this.photo = photo;
     }
 
     /**
@@ -37,6 +43,7 @@ public class JsonAdaptedBooking {
         this.name = source.getName().fullName;
         this.contact = source.getContact();
         this.budget = source.getBudget().getValue();
+        this.photo = source.getBookingPhoto();
     }
 
     /**
@@ -50,6 +57,6 @@ public class JsonAdaptedBooking {
                     String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
         }
 
-        return new Booking(new Name(name), contact, new Budget(budget));
+        return new Booking(new Name(name), contact, new Budget(budget), photo);
     }
 }

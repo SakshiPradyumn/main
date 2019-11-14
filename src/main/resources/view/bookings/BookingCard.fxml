@@ -32,7 +32,7 @@
                             <Insets />
                         </opaqueInsets>
                     </Label>
-               <Label fx:id="contactLabel" layoutX="164.0" layoutY="7.0" minWidth="-Infinity" style="-fx-font-family: Helvetica;" styleClass="cell_big_label" text="\$contact" textFill="#434343" />
+               <Label fx:id="contactLabel" layoutX="400.0" layoutY="6.0" minWidth="-Infinity" style="-fx-font-family: Helvetica;" styleClass="cell_big_label" text="\$contact" textFill="#434343" />
                 </children>
             </AnchorPane>
             <GridPane.margin>

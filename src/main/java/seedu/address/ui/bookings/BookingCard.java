@@ -2,6 +2,8 @@ package seedu.address.ui.bookings;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import seedu.address.commons.core.index.Index;
@@ -14,6 +16,8 @@ import seedu.address.ui.UiPart;
  */
 public class BookingCard extends UiPart<HBox> {
     private static final String FXML = "bookings/BookingCard.fxml";
+
+    private final String PATH_DEFAULT = "C:\\Users\\Sakshi Pradyumn\\Desktop\\nopreviewavailable.png";
 
     @FXML
     private Label idLabel;
@@ -42,10 +46,21 @@ public class BookingCard extends UiPart<HBox> {
      */
     private void fillBookingCardLabels() {
         idLabel.setText(displayedIndex.getOneBased() + ".");
+        Tooltip tooltip1 = new Tooltip("");
+        if(booking.getBookingPhoto().equals("")) {
+            tooltip1.setGraphic(new ImageView("file:" + PATH_DEFAULT));
+        } else {
+            tooltip1.setGraphic(new ImageView("file:" + booking.getBookingPhoto()));
+        }
+        idLabel.setTooltip(tooltip1);
+
         nameLabel.setText(booking.getName().toString());
+        nameLabel.setTooltip(tooltip1);
+
         contactLabel.setText(booking.getContact().toString());
         expenseLabel.setText(booking.getBudget().toString());
     }
+
     @Override
     public boolean equals(Object other) {
         // short circuit if same object

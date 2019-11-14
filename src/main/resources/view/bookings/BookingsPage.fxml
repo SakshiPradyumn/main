@@ -36,7 +36,7 @@
                 </GridPane.margin>
             </Button>
             <Button alignment="CENTER" contentDisplay="CENTER" minWidth="-Infinity" mnemonicParsing="false"
-                    prefHeight="35.0" text="Help" textAlignment="CENTER" GridPane.columnIndex="2"
+                    onMouseClicked="#handleHelp" prefHeight="35.0" text="Help" textAlignment="CENTER" GridPane.columnIndex="2"
                     GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                 <font>
                     <Font name="Consolas" size="16.0"/>

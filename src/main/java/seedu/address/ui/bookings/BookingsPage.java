@@ -68,4 +68,9 @@ public class BookingsPage extends PageWithSidebar<AnchorPane> {
     private void handleAddBooking() {
         mainWindow.executeGuiCommand(EnterCreateBookingCommand.COMMAND_WORD);
     }
+
+    @FXML
+    private void handleHelp() {
+        mainWindow.executeGuiCommand("help");
+    }
 }

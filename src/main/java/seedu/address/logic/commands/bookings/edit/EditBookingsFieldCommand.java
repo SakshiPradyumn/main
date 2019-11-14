@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.isAllPresent;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CONTACT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DATA_FILE_PATH;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 
 import java.util.Optional;
@@ -15,6 +16,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.booking.Booking;
 import seedu.address.model.booking.Name;
+import seedu.address.model.common.Photo;
 import seedu.address.model.itinerary.Budget;
 
 /**
@@ -32,6 +34,7 @@ public class EditBookingsFieldCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_CONTACT + "CONTACT] "
             + "[" + PREFIX_BUDGET + "BUDGET] "
+            + "[" + PREFIX_DATA_FILE_PATH + "FILE PATH TO PHOTO]\n"
             + "Example: " + COMMAND_WORD + " 1 " + PREFIX_CONTACT + "10";
 
     public static final String MESSAGE_NOT_EDITED = "At least one field must be provided!";
@@ -87,11 +90,13 @@ public class EditBookingsFieldCommand extends Command {
         private Optional<Name> name;
         private Optional<String> contact;
         private Optional<Budget> budget;
+        private Optional<String> photo;
 
         public EditBookingsDescriptor() {
             name = Optional.empty();
             contact = Optional.empty();
             budget = Optional.empty();
+            photo = Optional.empty();
         }
 
         /**
@@ -102,6 +107,7 @@ public class EditBookingsFieldCommand extends Command {
             name = toCopy.getName();
             contact = toCopy.getContact();
             budget = toCopy.getBudget();
+            photo = toCopy.getBookingPhoto();
         }
 
 
@@ -113,6 +119,7 @@ public class EditBookingsFieldCommand extends Command {
             setName(toCopy.getName());
             setContact(toCopy.getContact());
             setBudget(toCopy.getBudget());
+            setPhoto(toCopy.getBookingPhoto());
         }
 
 
@@ -135,6 +142,9 @@ public class EditBookingsFieldCommand extends Command {
 
             newDescriptor.budget.ifPresentOrElse(this::setBudget, () ->
                     oldDescriptor.budget.ifPresent(this::setBudget));
+
+            newDescriptor.photo.ifPresentOrElse(this::setPhoto, () ->
+                    oldDescriptor.photo.ifPresent(this::setPhoto));
         }
 
 
@@ -147,8 +157,8 @@ public class EditBookingsFieldCommand extends Command {
          * @throws NullPointerException If any of the fields are empty.
          */
         public Booking buildBooking() {
-            if (isAllPresent(name, contact, budget)) {
-                return new Booking(name.get(), contact.get(), budget.get()) {
+            if (isAllPresent(name, contact, budget, photo)) {
+                return new Booking(name.get(), contact.get(), budget.get(), photo.get()) {
                 };
             } else {
                 throw new NullPointerException();
@@ -167,6 +177,7 @@ public class EditBookingsFieldCommand extends Command {
             Name bookingName = booking.getName();
             String contact = booking.getContact();
             Budget budget = booking.getBudget();
+            String photo = booking.getBookingPhoto();
 
             if (this.name.isPresent()) {
                 bookingName = this.name.get();
@@ -177,8 +188,11 @@ public class EditBookingsFieldCommand extends Command {
             if (this.budget.isPresent()) {
                 budget = this.budget.get();
             }
+            if (this.photo.isPresent()) {
+                photo = this.photo.get();
+            }
 
-            return new Booking(bookingName, contact, budget) {
+            return new Booking(bookingName, contact, budget, photo) {
             };
         }
 
@@ -186,7 +200,7 @@ public class EditBookingsFieldCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyPresent(name, contact, budget);
+            return CollectionUtil.isAnyPresent(name, contact, budget, photo);
         }
 
 
@@ -212,6 +226,14 @@ public class EditBookingsFieldCommand extends Command {
 
         public Optional<Budget> getBudget() {
             return budget;
+        }
+
+        public void setPhoto(String photo) {
+            this.photo = Optional.of(photo);
+        }
+
+        public Optional<String> getBookingPhoto() {
+            return photo;
         }
 
         /*
@@ -258,7 +280,8 @@ public class EditBookingsFieldCommand extends Command {
 
             return getName().equals(e.getName())
                     && getContact().equals(e.getContact())
-                    && getBudget().equals(e.getBudget());
+                    && getBudget().equals(e.getBudget())
+                    && getBookingPhoto().equals(e.getBookingPhoto());
         }
 
         @Override
@@ -268,6 +291,7 @@ public class EditBookingsFieldCommand extends Command {
             this.name.ifPresent(name -> builder.append(" Name of booking: ").append(name));
             this.contact.ifPresent(contact -> builder.append(" Contact of the booking: ").append(contact));
             this.budget.ifPresent(budget -> builder.append(" Total Budget: ").append(budget));
+            this.photo.ifPresent(photo -> builder.append(" Photo path: ").append(photo));
 
             return builder.toString();
         }
